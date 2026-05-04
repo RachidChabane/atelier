@@ -184,9 +184,9 @@ Detail and supporting context for the procedure above:
 
 - `references/conventions.md` — full convention reference with examples
 - `references/stage-handoffs.md` — what comes after Stage 1 and how each Stage 2–5 hand-off works
-- `references/example-from-bayan.md` — annotated tour of a real Stage-1 application (the reference project) showing how the conventions land in practice
+- `references/example-walkthrough.md` — annotated tour of a real Stage-1 application (the reference project) showing how the conventions land in practice
 
-Load each only when needed: `conventions.md` whenever you're about to write a file with cross-references; `stage-handoffs.md` when transitioning out of Stage 1; `example-from-bayan.md` when the user asks "what does this look like in practice?"
+Load each only when needed: `conventions.md` whenever you're about to write a file with cross-references; `stage-handoffs.md` when transitioning out of Stage 1; `example-walkthrough.md` when the user asks "what does this look like in practice?"
 
 ## What this skill does NOT do
 

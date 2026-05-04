@@ -50,5 +50,5 @@ Plus optional Stage 2–5 hand-off scaffolds (`claude-design-prompt.md`, `app-ia
 - The skill itself: [`skills/project-bootstrap/SKILL.md`](skills/project-bootstrap/SKILL.md)
 - Conventions reference: [`skills/project-bootstrap/references/conventions.md`](skills/project-bootstrap/references/conventions.md)
 - Stage hand-offs reference: [`skills/project-bootstrap/references/stage-handoffs.md`](skills/project-bootstrap/references/stage-handoffs.md)
-- Annotated example from a real project: [`skills/project-bootstrap/references/example-from-bayan.md`](skills/project-bootstrap/references/example-from-bayan.md)
+- Annotated example from a real project: [`skills/project-bootstrap/references/example-walkthrough.md`](skills/project-bootstrap/references/example-walkthrough.md)
 - Marketplace root: [`../../README.md`](../../README.md)

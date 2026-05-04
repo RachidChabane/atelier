@@ -12,7 +12,7 @@ A reading-and-walk-through verification, not an end-to-end automated test. The s
 - **Marketplace:** `atelier` v0.1.0
 - **Plugin:** `project-bootstrap` v0.1.0
 - **Skill:** `project-bootstrap` v0.1.0
-- **Reference project:** the source pattern is the project at `/Users/rachid/dev-env/0-git/knowledge-master/docs/`
+- **Reference project:** the source pattern is a real Stage-1 application the author bootstrapped before encoding the workflow as a skill (annotated in `references/example-walkthrough.md`)
 
 ## Mechanical checks (passed)
 
@@ -72,7 +72,7 @@ The conventions enforced by the skill (per SKILL.md § "Conventions enforced" + 
 
 ### Coverage match against the reference pattern
 
-The reference project's `docs/` slate (per `references/example-from-bayan.md`):
+The reference project's `docs/` slate (per `references/example-walkthrough.md`):
 
 | Reference artifact | Skill produces it? |
 |---|---|
@@ -97,7 +97,7 @@ Listed honestly:
 
 1. **No live invocation.** The skill has not been installed and run against a real test repository. The first real-machine invocation is the *actual* smoke test; this document is a reading verification.
 2. **Conversation quality not measured.** Whether the conversation Claude drives produces *good* foundation docs depends on Claude's behavior at runtime. The skill encodes structure and pushes back on common failure modes, but the substance comes from the user.
-3. **`/plugin marketplace add RachidChabane/atelier` not test-installed.** The syntax is documented as supported, but the actual install flow against a private repo with the active GitHub account hasn't been exercised in this session. Run on first real-machine use.
+3. **`/plugin marketplace add RachidChabane/atelier` not test-installed.** The bare `owner/repo` syntax is documented as supported, but the actual install flow hasn't been exercised in this session. Run on first real-machine use.
 4. **Resume detection on a partially-populated `docs/`** not test-walked. The procedure documents the decision tree (empty → start at top; some drafts → ask which to resume; all approved → offer Stage 2; PLAN.md exists → ingest). The decision tree is internally consistent; behavior on edge cases (e.g., `docs/` exists but every artifact's status is missing or malformed) will surface in real use.
 5. **Stage 2–5 hand-off completeness.** The templates exist and the conventions match the reference project, but the Stage 2–5 scaffolds haven't been driven end-to-end (because the skill doesn't drive them — it scaffolds and points at the downstream tool). True validation comes from running each subsequent stage's tool against the scaffold this skill drops.
 

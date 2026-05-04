@@ -1,6 +1,6 @@
 # atelier
 
-Personal Claude Code plugin marketplace. Opinionated skills, slash commands, agents, and hooks I (Rachid Chabane) reuse across projects. Private; not listed publicly.
+Personal Claude Code plugin marketplace. Opinionated skills, slash commands, agents, and hooks I (Rachid Chabane) reuse across projects. Public under MIT — fork, copy, or install directly; not soliciting external contributions.
 
 ## What's here
 
@@ -12,8 +12,6 @@ The marketplace structure is designed to grow — `plugins/` holds one subdirect
 
 ## Install
 
-This repo is **private**. To install on a machine, the active GitHub account needs read access (currently: just `RachidChabane`).
-
 ### One-time setup
 
 In Claude Code:
@@ -22,7 +20,7 @@ In Claude Code:
 /plugin marketplace add RachidChabane/atelier
 ```
 
-Claude Code will clone the repo into `~/.claude/plugins/marketplaces/atelier` and read the manifest at `.claude-plugin/marketplace.json`.
+Claude Code clones the repo into `~/.claude/plugins/marketplaces/atelier` and reads the manifest at `.claude-plugin/marketplace.json`.
 
 ### Enable the plugins you want
 
@@ -98,9 +96,9 @@ Plausible additions (not committed, not on a calendar):
 
 Each lands as its own plugin under `plugins/` per [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-## Contact
+## Contact and contributions
 
-This is a personal marketplace; not accepting external contributions. If you found this and have questions: rachid.chabane59@gmail.com.
+This is a personal marketplace shaped around how I work. PRs aren't accepted — fork the repo if you want to adapt anything to your own workflow. Questions or interesting use-cases: open an issue, or email rachid.chabane59@gmail.com.
 
 ## License
 

@@ -18,7 +18,7 @@ Constraints:
 - kebab-case, lowercase, ASCII
 - Memorable — short enough to type, distinctive enough to remember
 - Not too generic — `marketplace`, `helpers`, `tools` collide with everything
-- Not too specific — `bayan-deck-generator` is project-specific; `pitch-deck` is reusable
+- Not too specific — `acme-deck-generator` is project-specific; `pitch-deck` is reusable
 
 Examples that fit:
 
