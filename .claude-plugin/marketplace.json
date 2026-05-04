@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "atelier",
+  "version": "0.1.0",
+  "description": "Personal Claude Code marketplace — opinionated skills, slash commands, agents, and hooks Rachid uses across projects.",
+  "owner": {
+    "name": "Rachid Chabane",
+    "email": "rachid.chabane59@gmail.com",
+    "url": "https://github.com/RachidChabane"
+  },
+  "plugins": [
+    {
+      "name": "project-bootstrap",
+      "description": "Drive a fresh repo through Stage-1 planning artifacts (vision, roadmap, requirements, open questions, architecture options, decisions) and prepare hand-offs for pitch deck, information architecture, screen design, and implementation slate. Resumes from whatever already exists in docs/.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Rachid Chabane",
+        "email": "rachid.chabane59@gmail.com"
+      },
+      "source": "./plugins/project-bootstrap",
+      "category": "planning",
+      "keywords": [
+        "project-planning",
+        "scaffolding",
+        "vision",
+        "roadmap",
+        "moscow",
+        "requirements",
+        "architecture",
+        "documentation"
+      ]
+    }
+  ]
+}
