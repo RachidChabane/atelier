@@ -1,0 +1,9 @@
+{
+  "name": "migrate-to-interactive-claude",
+  "description": "Migrate a project off `claude -p` onto a tmux-driven interactive Claude Code backend, to keep usage on the Claude subscription pool after Anthropic's 2026-06-15 billing split.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Rachid Chabane",
+    "email": "rachid.chabane59@gmail.com"
+  }
+}
