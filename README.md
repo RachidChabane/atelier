@@ -7,6 +7,7 @@ Personal Claude Code plugin marketplace. Opinionated skills, slash commands, age
 | Plugin | What it does |
 |---|---|
 | [`project-bootstrap`](plugins/project-bootstrap/) | Drives a fresh repo through Stage-1 planning artifacts (vision, roadmap, requirements, open questions, architecture options, decisions, plus domain-specific docs) and prepares hand-offs for pitch deck (Claude Design), information architecture, screen design, and implementation slate. Resumes from whatever artifacts already exist in `docs/`. |
+| [`migrate-to-interactive-claude`](plugins/migrate-to-interactive-claude/) | Walks a project off `claude -p` (programmatic pool) onto a tmux-driven interactive Claude Code backend (subscription pool), preserving the existing wrapper contract. Built for Anthropic's 2026-06-15 billing split. Ships verbatim reference docs (banned flags, idle-detection regex, JSONL schema, marker injection) plus runnable Python and TypeScript session snippets. |
 
 The marketplace structure is designed to grow — `plugins/` holds one subdirectory per plugin, each independently installable. Adding a new plugin is a ~30-minute mechanical operation; see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
@@ -26,6 +27,7 @@ Claude Code clones the repo into `~/.claude/plugins/marketplaces/atelier` and re
 
 ```text
 /plugin install project-bootstrap@atelier
+/plugin install migrate-to-interactive-claude@atelier
 ```
 
 Repeat per plugin as more land. To list what's installed:
@@ -57,15 +59,24 @@ atelier/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace manifest. Lists every plugin.
 ├── plugins/
-│   └── project-bootstrap/
+│   ├── project-bootstrap/
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json       # Per-plugin manifest.
+│   │   ├── README.md             # Plugin-level overview.
+│   │   └── skills/
+│   │       └── project-bootstrap/
+│   │           ├── SKILL.md
+│   │           ├── references/   # Loaded into context as needed.
+│   │           └── templates/    # Structural guides for the artifacts the skill produces.
+│   └── migrate-to-interactive-claude/
 │       ├── .claude-plugin/
-│       │   └── plugin.json       # Per-plugin manifest.
-│       ├── README.md             # Plugin-level overview.
+│       │   └── plugin.json
+│       ├── README.md
 │       └── skills/
-│           └── project-bootstrap/
+│           └── migrate-to-interactive-claude/
 │               ├── SKILL.md
-│               ├── references/   # Loaded into context as needed.
-│               └── templates/    # Structural guides for the artifacts the skill produces.
+│               ├── reference/    # Verbatim quotes / regexes / schema (loaded as needed).
+│               └── snippets/     # Runnable Python + TS session-lifecycle starters.
 ├── README.md                     # ← you are here
 ├── CONTRIBUTING.md               # How to add the next plugin / skill.
 ├── LICENSE                       # MIT.

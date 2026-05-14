@@ -4,7 +4,7 @@ Future-self should be able to add a new plugin or skill in under 30 minutes by f
 
 ## When to add a new plugin vs a new skill in an existing plugin
 
-- **New plugin** when the new capability is a coherent workflow area distinct from existing plugins (e.g., adding pitch-deck generation when project-bootstrap is the only thing here). Each plugin is independently installable.
+- **New plugin** when the new capability is a coherent workflow area distinct from existing plugins (e.g., `migrate-to-interactive-claude` lives separately from `project-bootstrap` because tmux-PTY migration and Stage-1 planning are unrelated workflow areas). Each plugin is independently installable.
 - **New skill in an existing plugin** when the capability is closely related to what the plugin already does (e.g., adding a "resume Stage 2" skill to `project-bootstrap`).
 
 When in doubt: prefer separate plugins. They're cheap to add and easier to enable/disable per-project.

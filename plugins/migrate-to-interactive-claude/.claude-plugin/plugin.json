@@ -1,9 +1,13 @@
 {
   "name": "migrate-to-interactive-claude",
-  "description": "Migrate a project off `claude -p` onto a tmux-driven interactive Claude Code backend, to keep usage on the Claude subscription pool after Anthropic's 2026-06-15 billing split.",
   "version": "0.1.0",
+  "description": "Migrate a project off `claude -p` onto a tmux-driven interactive Claude Code backend, to keep usage on the Claude subscription pool after Anthropic's 2026-06-15 billing split.",
   "author": {
     "name": "Rachid Chabane",
     "email": "rachid.chabane59@gmail.com"
-  }
+  },
+  "homepage": "https://github.com/RachidChabane/atelier/tree/main/plugins/migrate-to-interactive-claude",
+  "repository": "https://github.com/RachidChabane/atelier",
+  "license": "MIT",
+  "keywords": ["tmux", "claude-code", "subscription", "interactive", "migration", "billing", "libtmux", "session"]
 }
