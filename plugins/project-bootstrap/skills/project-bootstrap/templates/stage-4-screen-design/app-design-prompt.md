@@ -1,23 +1,23 @@
 # Template: `docs/app-design-prompt.md`
 
-Structural guide for the per-screen design prompt that gets pasted into Claude Design (claude.ai/design). Inherits the brand bundle uploaded for Stage 2 (the deck). Generates static HTML mockups of the load-bearing screens named in `app-ia.md` § 7 (screen inventory).
+Structural guide for the per-screen design prompt that gets pasted into Claude Design (claude.ai/design). Inherits the **published design system** established in Stage 2 Phase 2a (the same one the deck inherits). Generates static HTML mockups of the load-bearing screens named in `app-ia.md` § 7 (screen inventory).
 
 ## When to write
 
-After `app-ia.md` is approved (Stage 3 done) and Stage 2's brand bundle is already uploaded to Claude Design.
+After `app-ia.md` is approved (Stage 3 done) and the published design system from Stage 2 (Phase 2a) is live in Claude Design.
 
 ## Authoring discipline
 
 Same sentinel structure as the deck prompt (`docs/claude-design-prompt.md`): bracketed by `=== PROMPT ===` / `=== END PROMPT ===` so the bare prompt body is `awk`-extractable. Above the sentinels: a "How to use this file" preamble.
 
-The prompt **does not redefine the brand bundle** — it references the uploaded one. Per-screen specs are derived from `app-ia.md` § 7 entries.
+The prompt **does not redefine the design system** — it inherits the published one (no re-upload; projects created in the organization inherit it automatically). Per-screen specs are derived from `app-ia.md` § 7 entries.
 
 ## Required structure of the file
 
 ### Header
 
 ```markdown
-**Purpose:** A self-contained prompt the owner can paste into Claude Design to produce static HTML mockups of <project>'s load-bearing screens. Inherits the brand system, tone, banned vocabulary, typography stack, and palette from `claude-design-prompt.md`.
+**Purpose:** A self-contained prompt the owner can paste into Claude Design to produce static HTML mockups of <project>'s load-bearing screens. Inherits the **published design system** from Stage 2 (Phase 2a) for palette, typography, and components, plus the tone and banned vocabulary established in `claude-design-prompt.md`.
 **Status:** draft.
 ```
 
@@ -26,7 +26,7 @@ The prompt **does not redefine the brand bundle** — it references the uploaded
 ```markdown
 ## How to use this file
 
-1. **Confirm the brand bundle from Stage 2 is uploaded** to Claude Design's Design System (uploaded once for the deck; reused here).
+1. **Confirm the published design system from Stage 2 (Phase 2a) is live** in Claude Design. It was Published once; projects you create in the organization inherit it automatically — nothing to re-upload.
 2. **Set the canvas** to <desktop primary, e.g., 1920×1200>. Mobile is a separate pass.
 3. **Iterate one screen at a time.** Do not paste the entire prompt body and ask for N screens in a single call. Paste the project-context + audience + tone + banned-vocab + visual-direction prelude *once* (these set the system), then paste each screen's per-screen spec individually. Per-screen iteration is the rule; Claude Design produces noticeably better single-screen mockups than multi-screen sets.
 4. **Run a Playwright validation pass at the end** when the project ships an actual frontend. The first user sees what Playwright signed off on, not what Claude Design rendered.
@@ -61,9 +61,9 @@ Same audience as the deck (paraphrased from `claude-design-prompt.md` § Audienc
 
 Same banned vocabulary as the deck (referenced from `claude-design-prompt.md`), augmented with UI-specific banned terms — chrome words like "Loading…", "Click here", "Submit", "Get started", "Welcome back", "Empty state" — replaced with editorial paraphrases.
 
-#### Block D — Visual direction (refer to the uploaded bundle)
+#### Block D — Visual direction (inherit the published design system)
 
-Reference the uploaded brand bundle for palette, typography, and mark. Specify per-screen variants (light register default; optional dark register variant per screen). Repeat the anti-patterns list (gradients, generic icons, stock photos, skeuomorphic chrome, card shadows — the same list as the deck).
+Reference the **published design system** (from Stage 2 Phase 2a) for palette, typography, components, and mark — the project inherits it, so restate rather than redefine. Specify per-screen variants (light register default; optional dark register variant per screen). Repeat the anti-patterns list (gradients, generic icons, stock photos, skeuomorphic chrome, card shadows — the same list as the deck).
 
 #### Block E — Output format requirements (apply to all screens)
 
@@ -143,5 +143,5 @@ The first pass per screen will need at least 1–2 rounds. Common pushback lines
 
 - **Asking for all screens at once.** Per-screen iteration produces noticeably better mockups.
 - **Lorem ipsum content.** Kills the design conversation; mockups feel generic.
-- **Re-deriving palette and typography.** The brand bundle is uploaded once; reference it.
+- **Re-deriving palette and typography.** The design system is Published once in Stage 2 and inherited automatically; reference it, don't redefine it.
 - **Missing edge states.** A screen rendered only in its happy state gives no signal about how empty / refusal / partial states will land.

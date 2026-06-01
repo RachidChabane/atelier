@@ -2,9 +2,11 @@
 
 Structural guide for the pitch-deck prompt that will be pasted into Claude Design (claude.ai/design). The deck is the only client-facing artifact in `docs/`; everything else is owner-only.
 
+This is **Phase 2b** of Stage 2. **Phase 2a runs first**: `docs/design-system-setup.md` is a **form worksheet** the owner uses to create and **Publish** the project's design system through Claude Design's "Set up your design system" **form** (not a chat prompt). The deck is then created as a project that **inherits that published design system automatically** — so this prompt does **not** redefine palette or typography; it points at the published system. Do not paste this prompt until the design system is Published.
+
 ## When to write
 
-After Stage 1 is approved (or close), and the owner wants to pitch the project externally — to early users, collaborators, prospective contributors. Skip when the project has no external audience.
+Alongside `docs/design-system-setup.md`, after Stage 1 is approved (or close) and the owner wants to pitch the project externally — to early users, collaborators, prospective contributors. Skip the deck when the project has no external audience (but the Phase-2a design system is still worth establishing if Stage 4 screens are coming).
 
 ## Authoring discipline
 
@@ -26,13 +28,15 @@ A numbered list of pre-paste checks and the paste flow:
 ```markdown
 ## How to use this file
 
-1. Confirm <data file 1, e.g., cost numbers in `costs.xlsx`> is current.
-2. Confirm <architecture / scope choice from Stage 1> is still the path you intend to ship.
-3. Confirm the deck-facing <product name> is the one you want.
-4. Copy everything between the `=== PROMPT ===` markers below into Claude Design.
-5. Iterate on the slides. Plan 2–4 revision rounds. The first pass will almost always need a de-jargon round.
+1. **Confirm Phase 2a is done:** the design system from `design-system-setup.md` is set up and **Published** in Claude Design. The deck inherits it — without it, palette and typography fall back to defaults.
+2. Confirm <data file 1, e.g., cost numbers in `costs.xlsx`> is current.
+3. Confirm <architecture / scope choice from Stage 1> is still the path you intend to ship.
+4. Confirm the deck-facing <product name> is the one you want.
+5. **Create a new project from the Claude Design homescreen, inside your organization.** Project creation is conversational — there is no "project type" picker; you describe the deck in chat (e.g., *"Create a 10-slide deck about …"*) and the prompt below is that description. Because the design system is Published, the project inherits the palette, fonts, and components automatically; you do not re-upload brand assets.
+6. Copy everything between the `=== PROMPT ===` markers below and send it as the project's first message (attach the data files alongside it).
+7. Iterate on the slides. Plan 2–4 revision rounds. The first pass will almost always need a de-jargon round.
 
-The block below is **the prompt itself**, written in <output language> for direct paste. Claude Design will produce a <language> deck.
+The block below is **the prompt itself**, written in <output language> for direct paste. Claude Design will produce a <language> deck on top of the published design system.
 ```
 
 ### Section 2 — The prompt block
@@ -106,13 +110,15 @@ N+4. **The ask.** [what the audience is asked to commit to].
 
 #### Block E — Visual direction
 
-Reference the brand bundle uploaded separately; do not redefine palette and typography from scratch. Spell out:
+**Inherit the published design system** (established in Phase 2a via the `design-system-setup.md` form worksheet); do **not** redefine palette and typography from scratch. Open this block by telling Claude Design to use the project's published design system as the source of truth for color, type, components, and motion. Then spell out only the deck-specific reminders and refusals:
 
-- Palette (colors with hex codes, light/dark register)
-- Typography stack (display latin, body latin, body Arabic if applicable, mono — by family + weight + opsz)
-- Brand mark treatment (typographic glyph, not a logo)
-- Anti-patterns to refuse explicitly (gradients, mesh blobs, generic icon sets, stock photos, skeuomorphic chrome — adapt to the visual register)
-- Layout density expectations
+- Palette: name it as "the published palette" and restate only the deck-level usage rules (e.g., which register cover slides use); don't re-derive hex values that already live in the published system.
+- Typography: name the published stack (display, body, body-Arabic if applicable, mono) so Claude Design doesn't silently swap to system fonts — but as a *restatement of the inherited system*, not a fresh definition.
+- Brand mark treatment (typographic glyph, not a logo) — as published.
+- Anti-patterns to refuse explicitly (gradients, mesh blobs, generic icon sets, stock photos, skeuomorphic chrome — adapt to the visual register).
+- Layout density expectations for slides specifically.
+
+If a value here contradicts the published design system, the published system wins and this block is the thing that's wrong — fix it, don't fork the brand in the deck.
 
 #### Block F — Concrete data to surface
 
@@ -127,7 +133,7 @@ A table mapping data points (numbers, dates, names) to the slides where they app
 
 #### Block G — Output format
 
-Tell Claude Design the output format: total slide count, deck language, slide aspect ratio, export format expectations.
+Tell Claude Design the output format: total slide count, deck language, slide aspect ratio. Decks render as **interactive HTML on the canvas**. Name the export you'll use at the end — Claude Design's Export menu offers **Download as .zip · Export as PDF · Export as PPTX · Send to Canva · Export as standalone HTML · Handoff to Claude Code**. For an interactive deck, **standalone HTML** preserves the interactivity best; **PDF/PPTX** are right for a static hand-out.
 
 ### Section 3 — Notes on iterating
 
@@ -164,6 +170,7 @@ The first pass will need at least 2 rounds. Below are the rejection lines most l
 ## Anti-patterns
 
 - **Prompt without sentinels.** Hard to extract; users end up copy-pasting the wrong block.
-- **Prompt that re-derives palette from scratch.** Redundant with the brand bundle uploaded to Claude Design separately.
+- **Prompt that re-derives palette from scratch.** Redundant with — and liable to fork from — the **published design system** the deck project inherits (established in Phase 2a). Point at the published system; restate, don't redefine.
+- **Pasting the deck prompt before the design system is Published.** The deck then renders on Claude Design defaults instead of the brand. Phase 2a (the `design-system-setup.md` form) first, always.
 - **Slide count > 20.** Padded; cut.
 - **Missing "Notes on iterating."** First-pass output always needs pushback; pre-loading rejection lines saves the owner 30 minutes.

@@ -9,35 +9,49 @@ The `project-bootstrap` skill drives Stage 1 end-to-end. Stages 2–5 are *prepa
 The five stages produce different *kinds* of artifact under different *workflow* conditions:
 
 - **Stage 1 (foundation docs).** Conversation with the owner; produces structured markdown under `docs/`. This skill's bread and butter.
-- **Stage 2 (pitch deck).** Generative tool (Claude Design); produces slides. Requires a brand bundle prepared from Stage 1 + design tokens.
+- **Stage 2 (design system + pitch deck).** Generative tool (Claude Design), in two ordered phases. **Phase 2a** creates and **Publishes** a design system (palette, typography, components, layout patterns) through Claude Design's **"Set up your design system" form** — seeded from a company blurb + brand notes, optionally enriched with attached code/Figma/assets. **Phase 2b** generates the pitch deck as a project, created conversationally, that **inherits** the published design system. No pre-existing brand bundle is assumed.
 - **Stage 3 (information architecture).** Conversation that synthesizes Stage 1 docs into a route map and screen inventory. Could be its own skill in v2; for now, the scaffold is enough to drive the conversation.
-- **Stage 4 (screen design).** Same generative tool as Stage 2 (Claude Design), per-screen. Inherits Stage 2's brand bundle.
+- **Stage 4 (screen design).** Same generative tool as Stage 2 (Claude Design), per-screen. Inherits the **published design system from Stage 2** automatically — no re-upload.
 - **Stage 5 (implementation slate).** Hand-off to `claude-plan-execute` (or equivalent), which converts the IA into a `tasks.yaml` plus per-task config and drives the build.
 
-Each stage's *output* feeds the next stage's *input*. Stage 1's vision/roadmap/requirements feeds Stage 2's deck content. Stage 1's user requirements feed Stage 3's route map. Stage 3's IA feeds Stage 4's per-screen specs. Stage 3's IA feeds Stage 5's task slate.
+Each stage's *output* feeds the next stage's *input*. Stage 1's vision/brand decisions feed Stage 2's **design system** (Phase 2a); Stage 1's vision/roadmap/requirements feed Stage 2's **deck** content (Phase 2b). Stage 1's user requirements feed Stage 3's route map. Stage 3's IA feeds Stage 4's per-screen specs. Stage 3's IA feeds Stage 5's task slate. The **published design system from Stage 2 Phase 2a** feeds Stage 4's screens.
 
-## Stage 2 — Pitch deck (Claude Design)
+## Stage 2 — Design system + pitch deck (Claude Design)
 
-**When ready.** Stage 1 is `approved` (or close) and the owner wants to pitch the project externally — to early users, collaborators, prospective contributors.
+Stage 2 is **two ordered phases**. The design system comes **first** and is **Published**; the deck is generated **second** as a project that inherits it. This matches how Claude Design actually works:
+
+- The design system is created through a **setup form** — *"Set up your design system"* — reached from the **organization picker (lower-left)**; it requires **admin permissions** and is **organization-scoped** (it is *not* a chat prompt). The form's fields are: **"Company name and blurb (or name of design system)"**, an optional **"Provide examples of your design system and products (all optional)"** section (*Link code on GitHub* · *Link code from your computer* · *Upload a .fig file* · *Add fonts, logos and assets*), and **"Any other notes?"**. Claude generates a UI kit (color palette, typography, components, layout patterns) from those inputs.
+- The owner **reviews** the kit (validating with a throwaway test project), refines or swaps source assets, then flips the **"Published"** toggle on. Once Published, **every project created from the Claude Design homescreen while in that organization inherits the design system automatically** — no re-upload, no reconfiguration. The system is **editable later via "Remix"** (org settings → "Open" → "Remix" opens a chat to modify it).
+
+(Sources: Claude Design support, "Set up your design system" and "Get started with Claude Design.") **No pre-existing brand bundle is assumed** — every project fills the same form; the only branch is which optional examples it attaches. A from-scratch project seeds the brand from the blurb + notes alone (all examples are optional); when real code or assets exist, attaching ≥1 source materially improves extraction.
+
+**When ready.** Stage 1 is `approved` (or close) and the owner wants either to establish the project's visual identity, to pitch externally, or both. Even a project that skips the deck benefits from Phase 2a if Stage-4 screens are coming.
 
 **What the skill drops.**
 
-- `docs/claude-design-prompt.md` — the deck prompt with `=== PROMPT ===` sentinels and a "How to use this file" preamble.
-- `docs/_deck-bundle/README.md` — assembly guide for the brand bundle the user uploads to Claude Design first (typography, tokens, reference screenshots).
-- `docs/_deck-bundle/01-brand-system-upload/` — empty directory; user populates with brand assets.
+- `docs/design-system-setup.md` — **Phase 2a.** A **form worksheet** (copy-paste blocks mapped to the setup-form fields — **not** a `=== PROMPT ===` chat block): the *Company name and blurb* value (from `vision.md`), the *Any other notes?* value (distilled brand direction — notes-length), the optional **attach checklist**, and the **review → Publish (→ Remix to edit later)** loop.
+- `docs/claude-design-prompt.md` — **Phase 2b.** The deck **chat prompt** (`=== PROMPT ===` sentinels) that generates the deck as a project, created conversationally, **inheriting the published design system**. Does not redefine palette/type, and assumes no "project type" picker.
+- `docs/_deck-bundle/README.md` — the operational step-by-step that sequences both phases through the Claude Design UI (fill the form & Publish the design system → create the deck project that inherits it → iterate → export).
+- `docs/_deck-bundle/01-design-system-sources/` — empty directory; **optional** assets (fonts, logos, brand PDF, reference screenshots) to drag into the setup form. Stays empty for from-scratch projects.
 - `docs/_deck-bundle/02-deck-attachments/` — empty directory; user populates with cost spreadsheets or other reference data the deck needs.
 
 **What the user does.**
 
-1. Populate `_deck-bundle/01-brand-system-upload/` with brand assets (design tokens CSS, brand spec, reference screenshots, font files).
-2. Populate `_deck-bundle/02-deck-attachments/` with reference data (spreadsheets, datasets) the deck content references.
-3. Open Claude Design (claude.ai/design); upload the brand bundle to the Design System; flip "Published" on.
-4. Create a new "Slide deck" project; paste the body of `claude-design-prompt.md` (between the sentinels); attach the deck attachments; iterate.
-5. Export PDF.
+*Phase 2a — create & publish the design system (do this first):*
 
-The `_deck-bundle/README.md` template walks step-by-step through the Claude Design UI flow.
+1. Open Claude Design; from the **organization picker (lower-left)** select/create the org (admin permissions required) and start *"Set up your design system."*
+2. Fill the form from `design-system-setup.md`: paste the **Company name and blurb** and **Any other notes?** values; optionally attach code (GitHub link or a dragged frontend subfolder), a `.fig`, or fonts/logos/assets from `01-design-system-sources/`.
+3. Review the generated UI kit (validate with a test project; swap assets if extraction is weak), then **flip "Published" on.** Non-optional — an unpublished system is not inherited. (Edit later via **Remix**.)
 
-**Hand-off note in `claude-design-prompt.md` body.** The prompt should reference Stage 1 IDs explicitly: "Slide N covers `M-22b` from `roadmap.md`," "Slide N's commitment list maps to `FR-D8` and `FR-D9`." This keeps the deck and the planning docs synchronized.
+*Phase 2b — generate the deck (inherits the published system):*
+
+4. Populate `_deck-bundle/02-deck-attachments/` with reference data (spreadsheets, datasets) the deck content references.
+5. From the Claude Design homescreen, create a new project in the same organization — creation is **conversational** (describe the deck; no project-type picker), and it **inherits the published design system automatically**. Send the body of `claude-design-prompt.md` (between the sentinels) as the first message; attach the deck attachments; iterate via **Chat** and **inline comments**.
+6. Export — **standalone HTML** for an interactive deck, **PDF/PPTX** for a static hand-out.
+
+The `_deck-bundle/README.md` template walks step-by-step through the full two-phase Claude Design UI flow.
+
+**Hand-off note.** The deck prompt should reference Stage 1 IDs explicitly: "Slide N covers `M-22b` from `roadmap.md`," "Slide N's commitment list maps to `FR-D8` and `FR-D9`." This keeps the deck and the planning docs synchronized. The design-system worksheet grounds its *Company name and blurb* and *Any other notes?* values in `vision.md` (§ "what this product is" and § "why good looks different here").
 
 ## Stage 3 — Information architecture
 
@@ -62,22 +76,24 @@ The IA is the **reconciled source of truth** once it lands — if Stage 1 docs s
 
 ## Stage 4 — Screen design (Claude Design, per-screen)
 
-**When ready.** `app-ia.md` names the load-bearing screens and Stage 2's brand bundle is uploaded to Claude Design.
+**When ready.** `app-ia.md` names the load-bearing screens and the published design system from Stage 2 (Phase 2a) is live in Claude Design.
 
 **What the skill drops.**
 
-- `docs/app-design-prompt.md` — the screen-design prompt with the same sentinel structure as `claude-design-prompt.md`. Body inherits the brand bundle from Stage 2 and reads the screen specs from `app-ia.md`.
+- `docs/app-design-prompt.md` — the screen-design prompt with the same sentinel structure as `claude-design-prompt.md`. Body inherits the **published design system from Stage 2** and reads the screen specs from `app-ia.md`.
 
 **What the user does.**
 
-1. Confirm Stage 2's brand bundle is uploaded to Claude Design (already done in Stage 2 — re-use).
-2. Create a new "Prototype" project in Claude Design (not "Slide deck").
-3. Paste the prelude from `app-design-prompt.md` once (project context + audience + tone + banned-vocab + visual direction) to set the system.
-4. For each screen named in `app-ia.md`'s screen inventory: paste the per-screen spec individually. Iterate. Export.
+1. Confirm the **published design system from Stage 2 (Phase 2a)** is live in Claude Design — it was Published once and is **inherited automatically**; nothing to re-upload. Stage 4 rides on the *same* published system as the deck.
+2. From the homescreen, create a new project in the same organization. Creation is **conversational** (no project-type picker); it inherits the published design system automatically.
+3. Send the prelude from `app-design-prompt.md` once (project context + audience + tone + banned-vocab + visual direction) to set the system.
+4. For each screen named in `app-ia.md`'s screen inventory: send the per-screen spec individually. Iterate via **Chat** and **inline comments**. Export.
 
 Per-screen iteration is the rule: Claude Design produces noticeably better single-screen mockups than multi-screen sets.
 
 **Hand-off discipline.** The screen specs in `app-design-prompt.md` reference `app-ia.md` screen entries by name (e.g., "Screen 2 — Vue de réponse avec citations vérifiées maps to `app-ia.md` § 7 Screen 2"). When `app-ia.md` is updated, regenerate the corresponding screen.
+
+**Stage 4 → Stage 5 bridge.** Claude Design's Export menu includes **"Handoff to Claude Code"** (sub-options *Send to local coding agent* and *Send to Claude Code Web*). This is the accurate hand-off path from the generated screens into the implementation build — it hands the design over to a coding agent, where Stage 5's `claude-plan-execute` slate can drive the build against it. (For static reference, the same menu also exports standalone HTML / .zip.)
 
 ## Stage 5 — Implementation slate (claude-plan-execute)
 
@@ -104,6 +120,6 @@ Some projects don't need a deck (internal tooling). Some don't need an IA (CLI t
 
 ## When user already has Stage 2/3/4 artifacts
 
-If `claude-design-prompt.md` already exists from a prior iteration, don't overwrite. Read it; offer to update it against the latest Stage 1 content; let the user approve diffs.
+If `design-system-setup.md` or `claude-design-prompt.md` already exists from a prior iteration, don't overwrite. Read it; offer to update it against the latest Stage 1 content; let the user approve diffs.
 
 Same for `app-ia.md`, `app-design-prompt.md`, `persona.md`, `tasks.yaml`.

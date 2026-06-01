@@ -11,8 +11,8 @@
   "plugins": [
     {
       "name": "project-bootstrap",
-      "description": "Drive a fresh repo through Stage-1 planning artifacts (vision, roadmap, requirements, open questions, architecture options, decisions) and prepare hand-offs for pitch deck, information architecture, screen design, and implementation slate. Resumes from whatever already exists in docs/.",
-      "version": "0.1.0",
+      "description": "Drive a fresh repo through Stage-1 planning artifacts (vision, roadmap, requirements, open questions, architecture options, decisions) and prepare hand-offs for design system + pitch deck, information architecture, screen design, and implementation slate. Stage 2 creates and publishes a Claude Design design system via its setup form first, then generates a deck that inherits it. Resumes from whatever already exists in docs/.",
+      "version": "0.2.0",
       "author": {
         "name": "Rachid Chabane",
         "email": "rachid.chabane59@gmail.com"
@@ -27,6 +27,7 @@
         "moscow",
         "requirements",
         "architecture",
+        "design-system",
         "documentation"
       ]
     },

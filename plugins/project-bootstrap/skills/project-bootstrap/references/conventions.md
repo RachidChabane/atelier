@@ -84,7 +84,9 @@ End the roadmap with a **risk-to-feature mapping**: every top risk from `vision.
 
 ## Sentinels for external-tool prompts
 
-When a doc carries a prompt destined for an external tool (Claude Design, generic LLM, etc.), bracket the bare prompt body with sentinels so it can be extracted by `awk`:
+Sentinels are for **chat prompts only** — text the owner pastes into an external tool's chat (a Claude Design deck/screen prompt, a generic LLM prompt). They do **not** apply to **form input**: the Phase-2a `design-system-setup.md` worksheet maps to Claude Design's "Set up your design system" *form*, so it uses labeled copy blocks (one per field), **not** `=== PROMPT ===` sentinels. There's nothing to `awk`-extract from a form worksheet.
+
+When a doc carries a prompt destined for an external tool's chat (Claude Design deck/screens, generic LLM, etc.), bracket the bare prompt body with sentinels so it can be extracted by `awk`:
 
 ```markdown
 === PROMPT ===

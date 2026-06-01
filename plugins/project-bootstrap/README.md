@@ -1,6 +1,8 @@
 # project-bootstrap
 
-Drive a fresh or partially-planned project through opinionated Stage-1 planning artifacts (vision, roadmap, user requirements, open questions, architecture options, decisions, plus domain-specific docs) under `docs/`, and prepare hand-offs for pitch deck (Stage 2), information architecture (Stage 3), screen design (Stage 4), and implementation slate (Stage 5).
+Drive a fresh or partially-planned project through opinionated Stage-1 planning artifacts (vision, roadmap, user requirements, open questions, architecture options, decisions, plus domain-specific docs) under `docs/`, and prepare hand-offs for design system + pitch deck (Stage 2), information architecture (Stage 3), screen design (Stage 4), and implementation slate (Stage 5).
+
+Stage 2 is two ordered phases: **create and Publish a design system first** via Claude Design's **"Set up your design system" form** (a worksheet of copy-paste field values, not a chat prompt — works whether or not the project already has a brand), **then generate a pitch deck as a project that inherits it** — matching Claude Design's form-based, publish-and-inherit model. Stage 4 screens inherit the same published design system, and can bridge into the build via Claude Design's "Handoff to Claude Code" export.
 
 ## What ships
 
@@ -37,13 +39,28 @@ A `docs/` folder containing:
 - 0–N domain-specific docs (named in conversation; e.g., `<topic>-considerations.md`, `<topic>-strategy.md`)
 - `existing-code-survey.md` — only when scaffolding atop existing code
 
-Plus optional Stage 2–5 hand-off scaffolds (`claude-design-prompt.md`, `app-ia.md`, `app-design-prompt.md`, `persona.md`, etc.) when you want them.
+Plus optional Stage 2–5 hand-off scaffolds (`design-system-setup.md` + `claude-design-prompt.md`, `app-ia.md`, `app-design-prompt.md`, `persona.md`, etc.) when you want them.
 
 ## What this skill does NOT do
 
 - Does not invent project content. The user articulates substance; the skill drives structure.
 - Does not auto-build the pitch deck, IA, screens, or implementation. It scaffolds and points at the right downstream tool (Claude Design, separate skills, `claude-plan-execute`).
 - Does not pre-name domain docs. Asks what the project actually needs.
+
+## Changelog
+
+### 0.2.0
+
+- **Stage 2 rebuilt around how Claude Design actually works — design-system-first, form-based.** Split Stage 2 into two ordered phases: **Phase 2a** creates and **Publishes** a Claude Design *design system* through the **"Set up your design system" form** (color palette, typography, components, layout patterns); **Phase 2b** generates a pitch deck as a project, created conversationally, that **inherits** the published system automatically.
+- **Phase 2a is a form worksheet, not a chat prompt.** Added `templates/stage-2-brand-and-deck/design-system-setup.md` — copy-paste blocks mapped to the form's fields (*Company name and blurb*, *Any other notes?*, the optional examples attach checklist) plus the **review → Publish (→ Remix to edit later)** loop. `=== PROMPT ===` sentinels are now reserved for chat prompts only (deck, screens). Works whether or not the project already has a brand: every project fills the same form; the only branch is which optional sources it attaches.
+- **Deck prompt inherits, doesn't redefine, and assumes no project-type picker.** `claude-design-prompt.md` points at the published design system and describes deck creation conversationally; export options corrected to the real menu (zip · PDF · PPTX · Canva · standalone HTML · Handoff to Claude Code).
+- **`_deck-bundle/README.md` reordered** to: open the org picker → fill the setup form & **Publish** → create the deck project that inherits it → iterate via **Chat + inline comments** → export. Removed unverified UI affordances (no "Slide deck"/"High fidelity" picker, "adjustment knobs", or "direct text edit").
+- **Stage 4 inherits the same published design system**, and the Stage 4 → 5 bridge now uses Claude Design's native **"Handoff to Claude Code"** export.
+- Renamed template dir `stage-2-pitch-deck/` → `stage-2-brand-and-deck/`.
+
+### 0.1.0
+
+- Initial release: Stage-1 foundation slate (vision, roadmap, requirements, open questions, architecture options, decisions, domain docs) + hand-off scaffolds for Stages 2–5.
 
 ## See also
 

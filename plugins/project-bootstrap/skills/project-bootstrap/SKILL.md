@@ -1,11 +1,11 @@
 ---
 name: project-bootstrap
-description: This skill should be used when the user asks to "bootstrap a project", "set up planning docs", "scaffold vision and roadmap", "kick off a new project", "lay the foundation for a project", "set up the docs folder", or invokes the skill in a repository where docs/ is empty, partial, or otherwise needs the foundation slate. It drives a conversation that produces an opinionated, cross-referenced set of Stage-1 planning artifacts (vision, roadmap, user requirements, open questions, architecture options, decisions, plus domain-specific docs) under docs/, then prepares hand-offs for pitch deck (Stage 2), information architecture (Stage 3), screen design (Stage 4), and implementation slate (Stage 5). Resumes intelligently from whatever artifacts already exist.
+description: This skill should be used when the user asks to "bootstrap a project", "set up planning docs", "scaffold vision and roadmap", "kick off a new project", "lay the foundation for a project", "set up the docs folder", or invokes the skill in a repository where docs/ is empty, partial, or otherwise needs the foundation slate. It drives a conversation that produces an opinionated, cross-referenced set of Stage-1 planning artifacts (vision, roadmap, user requirements, open questions, architecture options, decisions, plus domain-specific docs) under docs/, then prepares hand-offs for design system + pitch deck (Stage 2), information architecture (Stage 3), screen design (Stage 4), and implementation slate (Stage 5). Resumes intelligently from whatever artifacts already exist.
 ---
 
 # project-bootstrap
 
-Drive a project through five planning stages. Stage 1 (foundation docs) is the bulk of this skill. Stages 2–5 (deck, IA, screen design, implementation slate) are prepared — the skill leaves prompt skeletons and hand-off notes for the user to drive each subsequent stage with the appropriate tool.
+Drive a project through five planning stages. Stage 1 (foundation docs) is the bulk of this skill. Stages 2–5 (design system + deck, IA, screen design, implementation slate) are prepared — the skill leaves prompt skeletons and hand-off notes for the user to drive each subsequent stage with the appropriate tool. Stage 2 itself is two ordered phases: **establish and Publish a design system first** (Phase 2a), **then generate a pitch deck that inherits it** (Phase 2b).
 
 The skill is opinionated about **structure** (file names, section headings, cross-document IDs, conventions) and lets the **content** itself emerge from conversation. It does not invent project content; it drives the user to articulate it in a coherent shape.
 
@@ -33,7 +33,7 @@ Decide the next action:
 
 1. **`docs/` does not exist or is empty** → start at the top of "Step-by-step procedure" below.
 2. **Some artifacts exist as `draft`** → ask the user which to resume; default to the lowest-numbered missing or earliest-status doc in the canonical order (README → vision → roadmap → user-requirements → architecture-options → open-questions → domain docs → decisions).
-3. **All Stage-1 artifacts exist as `approved`** → offer to move into Stage 2 hand-off (pitch deck) or Stage 3 (information architecture).
+3. **All Stage-1 artifacts exist as `approved`** → offer to move into Stage 2 hand-off (design system + pitch deck) or Stage 3 (information architecture).
 4. **A `PLAN.md`, draft, or paste-in exists at repo root** → ingest it into the structured artifacts rather than starting over. Cite specific passages of the source when proposing each section.
 
 Never overwrite existing content silently. When iterating on a `draft` doc, propose changes inline and let the user approve before writing.
@@ -133,13 +133,15 @@ After Stage 1 lands, revisit `docs/README.md`: every doc gets a one-line synopsi
 
 Drop these scaffolds (only the ones the user wants now):
 
-- `docs/claude-design-prompt.md` — Stage 2: pitch-deck prompt with `=== PROMPT ===` / `=== END PROMPT ===` sentinels and a "How to use this file" preamble. See `templates/stage-2-pitch-deck/claude-design-prompt.md`.
-- `docs/_deck-bundle/README.md` — Stage 2: brand-bundle assembly notes for Claude Design upload. See `templates/stage-2-pitch-deck/_deck-bundle-readme.md`.
+- **Stage 2 is two ordered phases — design system first, deck second.**
+  - `docs/design-system-setup.md` — **Phase 2a:** a **form worksheet** (copy-paste blocks, **not** a `=== PROMPT ===` chat block) for Claude Design's **"Set up your design system" form** — reached from the org picker (admin, org-scoped). Gives the *Company name and blurb* value (from `vision.md`), the notes-length *Any other notes?* brand direction, an **optional** attach checklist (GitHub code / dragged frontend subfolder / `.fig` / fonts-logos-assets), and the **review → Publish (→ Remix to edit later)** loop. See `templates/stage-2-brand-and-deck/design-system-setup.md`.
+  - `docs/claude-design-prompt.md` — **Phase 2b:** pitch-deck **chat prompt** that generates the deck as a project, created conversationally (no project-type picker), **inheriting the published design system** (does not redefine palette/type). `=== PROMPT ===` sentinel structure. See `templates/stage-2-brand-and-deck/claude-design-prompt.md`.
+  - `docs/_deck-bundle/README.md` — Stage 2: operational step-by-step sequencing both phases through the Claude Design UI (fill the form & **Publish** the design system → create the deck project that inherits it → iterate via Chat + inline comments → export). See `templates/stage-2-brand-and-deck/_deck-bundle-readme.md`.
 - `docs/app-ia.md` — Stage 3: information architecture skeleton (vocabulary mapping, persona model, route map, screen inventory, data domain model, core flows, API surface, cross-screen invariants, implementation order). See `templates/stage-3-information-architecture/app-ia.md`.
-- `docs/app-design-prompt.md` — Stage 4: per-screen design prompt with same sentinel structure as the deck prompt; inherits the brand bundle. See `templates/stage-4-screen-design/app-design-prompt.md`.
+- `docs/app-design-prompt.md` — Stage 4: per-screen design **chat prompt** with the same sentinel structure as the deck prompt; inherits the **same published design system from Stage 2 (Phase 2a)**. Stage 4 → Stage 5 can bridge via Claude Design's native **"Handoff to Claude Code"** export. See `templates/stage-4-screen-design/app-design-prompt.md`.
 - `docs/persona.md` + `docs/tasks.yaml` skeleton — Stage 5: implementation slate. See `templates/stage-5-implementation-slate/`.
 
-The skill **does not author** Stages 2–5 in v1. It scaffolds them and points at the appropriate downstream tool (Claude Design, claude-plan-execute).
+The skill **does not author** Stages 2–5 in v1. It scaffolds them and points at the appropriate downstream tool (Claude Design, claude-plan-execute). For Stage 2 specifically, "scaffold, don't author" means the skill prepares the form worksheet, the deck prompt, and the step-by-step; the owner fills the form to run Phase 2a (create + Publish the design system) and runs Phase 2b (generate the deck) in Claude Design.
 
 ## Conventions enforced (load `references/conventions.md` for the full reference)
 
@@ -150,7 +152,7 @@ Lock these as the conversation produces files. They are non-negotiable; they mak
 - **Doc headers.** Every doc starts with `**Purpose:** …` + `**Status:** draft | for review | approved`.
 - **Inline assumptions.** `**Assumption:** …` markers inline are also indexed in `open-questions.md` with an `[OQ-N]` tag.
 - **Cross-document references.** Use the IDs (`M-22b`, `FR-D5`, `OQ-3`, `D-001`); don't paraphrase.
-- **Sentinels.** Claude Design / external-tool prompts use `=== PROMPT ===` … `=== END PROMPT ===` so the bare prompt body is `awk`-extractable.
+- **Sentinels — chat prompts only.** Reserve `=== PROMPT ===` … `=== END PROMPT ===` for prompts pasted into a Claude Design / external-tool **chat** (the deck, the screens) so the bare body is `awk`-extractable. The Phase-2a design-system worksheet is **form input**, not a chat prompt — it uses labeled copy blocks, no sentinels.
 - **Filenames.** kebab-case ASCII, lowercase.
 - **Currency, dates, units.** Confirmed at intake (Step 0); recorded in `docs/README.md`'s "Conventions" section.
 
@@ -169,8 +171,9 @@ Each artifact has a structural template under `templates/`:
 - `templates/stage-1-foundation/domain-doc.md`
 - `templates/stage-1-foundation/existing-code-survey.md`
 - `templates/stage-1-foundation/decisions/D-template.md`
-- `templates/stage-2-pitch-deck/claude-design-prompt.md`
-- `templates/stage-2-pitch-deck/_deck-bundle-readme.md`
+- `templates/stage-2-brand-and-deck/design-system-setup.md`
+- `templates/stage-2-brand-and-deck/claude-design-prompt.md`
+- `templates/stage-2-brand-and-deck/_deck-bundle-readme.md`
 - `templates/stage-3-information-architecture/app-ia.md`
 - `templates/stage-4-screen-design/app-design-prompt.md`
 - `templates/stage-5-implementation-slate/persona.md`

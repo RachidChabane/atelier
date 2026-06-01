@@ -1,7 +1,7 @@
 {
   "name": "project-bootstrap",
-  "version": "0.1.0",
-  "description": "Drive a fresh repo through opinionated Stage-1 planning artifacts and prepare hand-offs for pitch deck, IA, screen design, and implementation slate.",
+  "version": "0.2.0",
+  "description": "Drive a fresh repo through opinionated Stage-1 planning artifacts and prepare hand-offs for design system + pitch deck, IA, screen design, and implementation slate.",
   "author": {
     "name": "Rachid Chabane",
     "email": "rachid.chabane59@gmail.com"
@@ -9,5 +9,5 @@
   "homepage": "https://github.com/RachidChabane/atelier/tree/main/plugins/project-bootstrap",
   "repository": "https://github.com/RachidChabane/atelier",
   "license": "MIT",
-  "keywords": ["project-planning", "scaffolding", "vision", "roadmap", "moscow", "documentation"]
+  "keywords": ["project-planning", "scaffolding", "vision", "roadmap", "moscow", "design-system", "documentation"]
 }

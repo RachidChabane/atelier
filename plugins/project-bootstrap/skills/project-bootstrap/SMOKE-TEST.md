@@ -8,17 +8,17 @@ A reading-and-walk-through verification, not an end-to-end automated test. The s
 
 ## Date and version
 
-- **Date:** 2026-05-04
+- **Date:** 2026-05-04 (re-verified 2026-06-01 for v0.2.0 — Stage-2 rebuilt around Claude Design's form-based, publish-and-inherit model)
 - **Marketplace:** `atelier` v0.1.0
-- **Plugin:** `project-bootstrap` v0.1.0
-- **Skill:** `project-bootstrap` v0.1.0
+- **Plugin:** `project-bootstrap` v0.2.0
+- **Skill:** `project-bootstrap` v0.2.0
 - **Reference project:** the source pattern is a real Stage-1 application the author bootstrapped before encoding the workflow as a skill (annotated in `references/example-walkthrough.md`)
 
 ## Mechanical checks (passed)
 
 | Check | Result |
 |---|---|
-| Every `templates/...` path referenced in `SKILL.md` resolves to an existing file (15 paths) | OK |
+| Every `templates/...` path referenced in `SKILL.md` resolves to an existing file (16 paths) | OK |
 | Every `references/...` path referenced in `SKILL.md` resolves to an existing file (3 paths) | OK |
 | No orphan templates (every template file is referenced) | OK |
 | `marketplace.json` parses as valid JSON (`jq .`) | OK |
@@ -54,7 +54,7 @@ Walking the procedure in `SKILL.md`:
 10. **Step 8 — `docs/existing-code-survey.md`.** Conditional on scaffolding atop existing code. File-by-file disposition table with vocabulary `Keep / Keep + extend / Refactor / Discard` + cited justification. Matches reference. ✓
 11. **Step 9 — `docs/decisions/D-NNN-<slug>.md`.** ~150-word records with Decision / Why / Consequences / What we did NOT pick. Matches reference's 7 decision records (`D-001`…`D-007`). ✓
 12. **Step 10 — Re-read `docs/README.md`.** Revisit synopsis-per-doc, reading order, top blocking questions. Matches reference. ✓
-13. **Step 11 — Hand-offs for Stages 2–5.** Conditional drops only what the user wants. Templates exist for: Stage 2 (`claude-design-prompt.md` + `_deck-bundle/README.md`), Stage 3 (`app-ia.md`), Stage 4 (`app-design-prompt.md`), Stage 5 (`persona.md` + `tasks-yaml-handoff.md`). All sentinel-bracketed prompt-style templates use the `=== PROMPT ===` / `=== END PROMPT ===` shape. Matches reference. ✓
+13. **Step 11 — Hand-offs for Stages 2–5.** Conditional drops only what the user wants. Templates exist for: Stage 2 — design-system-first, two ordered phases (`design-system-setup.md` for Phase 2a + `claude-design-prompt.md` for Phase 2b + `_deck-bundle/README.md`), Stage 3 (`app-ia.md`), Stage 4 (`app-design-prompt.md`), Stage 5 (`persona.md` + `tasks-yaml-handoff.md`). The **chat-prompt** templates (deck, screens) use the `=== PROMPT ===` / `=== END PROMPT ===` shape (one extractable block per file); the Phase-2a `design-system-setup.md` is a **form worksheet** (labeled copy blocks, no sentinels) because Claude Design's design system is created via a setup form, not a chat prompt. Matches reference. ✓
 
 ### Conventions encoded
 
@@ -85,7 +85,8 @@ The reference project's `docs/` slate (per `references/example-walkthrough.md`):
 | `docs/<domain-doc>.md` × N | Yes (Step 7) — emerges from conversation, not pre-named |
 | `docs/existing-code-survey.md` | Yes when atop existing code (Step 8) |
 | `docs/decisions/D-NNN-*.md` | Yes (Step 9) |
-| `docs/claude-design-prompt.md` (Stage 2) | Yes as hand-off scaffold (Step 11) |
+| `docs/design-system-setup.md` (Stage 2, Phase 2a) | Yes as hand-off scaffold (Step 11) |
+| `docs/claude-design-prompt.md` (Stage 2, Phase 2b) | Yes as hand-off scaffold (Step 11) |
 | `docs/_deck-bundle/README.md` (Stage 2) | Yes as hand-off scaffold (Step 11) |
 | `docs/app-ia.md` (Stage 3) | Yes as hand-off scaffold (Step 11) |
 | `docs/app-design-prompt.md` (Stage 4) | Yes as hand-off scaffold (Step 11) |
