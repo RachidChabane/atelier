@@ -49,6 +49,10 @@ Plus optional Stage 2–5 hand-off scaffolds (`design-system-setup.md` + `claude
 
 ## Changelog
 
+### 0.2.1
+
+- **Stage 2 font-upload fix.** Clarified that Claude Design does **not** fetch fonts by name — when the design system pins specific typefaces, the actual font **files must be uploaded** via *"Add fonts, logos and assets"*, or Claude renders substitute web fonts and shows a *"Missing brand fonts"* warning. Updated `design-system-setup.md` (attach checklist), `_deck-bundle-readme.md` (non-skippable upload step + `01-design-system-sources/fonts/` tree with full/variable files + license + troubleshooting entry), and `stage-handoffs.md` (distinct required step). Guidance: upload the canonical **full/variable `.ttf`/`.otf`** (complete weight axis + charset), not the subsetted `.woff2` fragments a build pipeline emits.
+
 ### 0.2.0
 
 - **Stage 2 rebuilt around how Claude Design actually works — design-system-first, form-based.** Split Stage 2 into two ordered phases: **Phase 2a** creates and **Publishes** a Claude Design *design system* through the **"Set up your design system" form** (color palette, typography, components, layout patterns); **Phase 2b** generates a pitch deck as a project, created conversationally, that **inherits** the published system automatically.

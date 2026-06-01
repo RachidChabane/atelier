@@ -1,6 +1,6 @@
 {
   "name": "project-bootstrap",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Drive a fresh repo through opinionated Stage-1 planning artifacts and prepare hand-offs for design system + pitch deck, IA, screen design, and implementation slate.",
   "author": {
     "name": "Rachid Chabane",

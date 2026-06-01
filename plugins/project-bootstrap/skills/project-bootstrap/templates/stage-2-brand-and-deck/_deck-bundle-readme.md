@@ -30,14 +30,15 @@ docs/
 ├── claude-design-prompt.md             ← Phase 2b: the deck CHAT prompt (paste into the deck project)
 └── _deck-bundle/
     ├── README.md                       ← you are here
-    ├── 01-design-system-sources/       ← Phase 2a: OPTIONAL assets to drag into the setup form
+    ├── 01-design-system-sources/       ← Phase 2a: assets to drag into the setup form
     │   ├── 01-reference-light.png      ← <visual reference screenshot, if any>
     │   ├── 02-reference-dark.png
     │   ├── brand.pdf                   ← brand PDF / deck, if any
-    │   └── fonts/                      ← font files to drag in, if any
-    │       ├── <DisplayLatin>.ttf
-    │       ├── <BodyLatin>.ttf
-    │       └── <Mono>.ttf
+    │   └── fonts/                      ← brand fonts — REQUIRED if the system pins typefaces
+    │       ├── <DisplayFamily>-VF.ttf  ← full/variable TTF/OTF: all weights, full charset
+    │       ├── <BodyFamily>-VF.ttf     ←   (NOT the build pipeline's subsetted .woff2 fragments)
+    │       ├── <Mono>-VF.ttf
+    │       └── OFL.txt                 ← license file for any open-source (SIL OFL) font
     └── 02-deck-attachments/            ← Phase 2b: the deck's data files
         ├── <data-file-1>.xlsx          ← drives slide N's figures
         └── <data-file-2>.xlsx          ← drives slide N's figures
@@ -45,7 +46,7 @@ docs/
 
 `design-system-setup.md` and `claude-design-prompt.md` live at the `docs/` top level (siblings of `_deck-bundle/`). The deck prompt's `awk` extractor reads `docs/claude-design-prompt.md`; `design-system-setup.md` is a worksheet — nothing to extract from it.
 
-**Everything in `01-design-system-sources/` is optional.** The form accepts code links, a Figma `.fig`, and fonts/logos/assets — all marked optional. You can seed the brand from the worksheet's text fields alone; attaching ≥1 real source when one exists improves what Claude extracts. A from-scratch project can leave this folder empty.
+**Most of `01-design-system-sources/` is optional — fonts are the exception.** The form accepts code links, a Figma `.fig`, and fonts/logos/assets, all *labeled* optional; you can seed the brand from the worksheet's text fields alone, and ≥1 real source improves extraction. **But if your design system pins specific typefaces, the font *files* must be uploaded** — naming a typeface in text does not import it (Claude substitutes web fonts and warns "Missing brand fonts"). A from-scratch project that names no specific family can leave this folder empty.
 
 Total time, end-to-end: ~75–110 minutes (most of it in Phase 2b iteration).
 ```
@@ -70,29 +71,30 @@ Active Claude Pro / Max / Team / Enterprise subscription (on Enterprise, Claude 
 #### Fill the form (from `design-system-setup.md`)
 
 1. **"Company name and blurb (or name of design system)"** — paste the *Company name and blurb* block from `design-system-setup.md`.
-2. **"Provide examples of your design system and products (all optional)"** — work the attach checklist. All four are optional:
-   - **Link code on GitHub** — paste the repo URL.
-   - **Link code from your computer** — drag a folder (a frontend subfolder for a large repo).
-   - **Upload a .fig file** — drag a Figma file.
-   - **Add fonts, logos and assets** — drag anything from `01-design-system-sources/` (fonts, logos, brand PDF, reference screenshots).
-   If the project is from scratch, skip the code attachments and rely on the text fields (optionally add inspiration assets).
+2. **"Provide examples of your design system and products (all optional)"** — work the attach checklist:
+   - **Link code on GitHub** — paste the repo URL. *(optional)*
+   - **Link code from your computer** — drag a folder, a frontend subfolder for a large repo. *(optional)*
+   - **Upload a .fig file** — drag a Figma file. *(optional)*
+   - **Add fonts, logos and assets** — drag logos, brand PDF, and reference screenshots *(optional)* **— and the brand font files, which are NOT optional when the system pins typefaces.** Upload the **full/variable `.ttf`/`.otf`** from `01-design-system-sources/fonts/` (all weights, full charset). Do not upload the build pipeline's subsetted `.woff2` fragments — they're incomplete.
+   If the project is from scratch and names no specific typeface, skip the code attachments and rely on the text fields (optionally add inspiration assets).
 3. **"Any other notes?"** — paste the *Any other notes?* block from `design-system-setup.md`.
-4. Submit. Claude generates a UI kit: **color palette** (primary/secondary/accent), **typography** (families/sizes/weights), **components** (buttons, cards, navigation), **layout patterns** (spacing, grid, page structures).
+4. **Upload the brand fonts — do NOT skip this when you pinned typefaces.** In the "Add fonts, logos and assets" zone, upload the **full/variable `.ttf`/`.otf`** binaries (not the build pipeline's subsetted `.woff2` fragments). Naming the family in the notes field is not enough — without the binaries Claude renders substitutes and shows a **"Missing brand fonts"** warning. If you see that warning, use its **"Upload fonts"** button and confirm the typography renders in the real faces before moving on.
+5. Submit. Claude generates a UI kit: **color palette** (primary/secondary/accent), **typography** (families/sizes/weights), **components** (buttons, cards, navigation), **layout patterns** (spacing, grid, page structures).
 
 #### Review, refine, Publish
 
-5. **Review** the generated kit against your notes.
-6. **Validate** with a throwaway test project (ask Claude for a landing page or dashboard) to see the brand in use. If extraction is weak, **add or swap source assets** and regenerate.
-7. **Flip "Published" on.** This makes it the organization's design system; every project you create afterward inherits it automatically.
-8. **To edit later:** org settings → **"Open"** next to the design system → **"Remix"** opens a chat to modify it. You don't re-run the form for tweaks.
+6. **Review** the generated kit against your notes — including that the typography is rendering in your actual fonts, not substitutes.
+7. **Validate** with a throwaway test project (ask Claude for a landing page or dashboard) to see the brand in use. If extraction is weak, **add or swap source assets** and regenerate.
+8. **Flip "Published" on.** This makes it the organization's design system; every project you create afterward inherits it automatically.
+9. **To edit later:** org settings → **"Open"** next to the design system → **"Remix"** opens a chat to modify it. You don't re-run the form for tweaks.
 ```
 
 Document common refinement lines specific to the project's brand (these go into **Remix chat** after publishing, or into the form's notes before):
 
 ```markdown
 **Refinements you might need:**
-- If <Display Family> is missing or replaced by a generic serif: *"The display font must be **<Display Family>** [variable axes spec], weights 400 and 600 only. Re-import from Google Fonts."*
-- If <script> fonts are missing: *"Add **<Script Display>** as <script> display font and **<Script Body>** as <script> body font."*
+- If <Display Family> is missing or replaced by a generic serif: **upload the font file** — don't ask Claude to "re-import" it. It can't fetch fonts by name; upload the full/variable `<Display Family>.ttf` (weights 400 & 600 at minimum) via *Add fonts, logos and assets* / the "Upload fonts" button, then in chat: *"Use the uploaded **<Display Family>** for display; weights 400 and 600 only."*
+- If <script> fonts are missing: **upload them** — drag the `<Script Display>` and `<Script Body>` font files, then in chat: *"Use uploaded **<Script Display>** as <script> display and **<Script Body>** as <script> body."* (A named-but-not-uploaded script font is the usual cause of missing diacritics.)
 - If a fourth color appeared: *"Strip the palette to three colors total: `<bg hex>` background, `<fg hex>` foreground, `<accent hex>` accent. No other color. Provide the dark-register equivalents."*
 ```
 
@@ -137,6 +139,7 @@ Share the export with one trusted member of the audience first. Their first reac
 ## Troubleshooting
 
 - **"The deck isn't using my brand."** The design system isn't Published, or the deck project was created outside the org that owns it. Confirm "Published" is on (Step 2) and create the deck from the homescreen of the same organization (Step 3).
+- **"'Missing brand fonts' / typography looks like substitute web fonts."** The font binaries were never uploaded — naming the font in text does not import it. Use **"Add fonts, logos and assets"** (or the warning's **"Upload fonts"** button) to upload the actual **full/variable `.ttf`/`.otf`** files; do not use build-pipeline subsetted `.woff2` fragments (incomplete weights/glyphs). Then re-check the typography.
 - **"I can't find the design-system setup."** It's reached from the **organization picker in the lower-left**. Setup needs **admin permissions**; if you don't see it, you may not be an org admin (or, on Enterprise, Claude Design may not be enabled for your org yet).
 - **"Claude generated the deck in <wrong language>."** First-pass language drift. Reply in chat: *"Regenerate the entire deck in <intended language>. Output language is <language> — non-negotiable."*
 - **"Speaker notes are missing."** Reply: *"Add speaker notes to every slide. Max 80 words per slide. <Language>. Notes anticipate <audience> pushback; they don't summarize the slide."*
@@ -155,7 +158,8 @@ Share the export with one trusted member of the audience first. Their first reac
 
 - **Deck-first ordering.** If the deck is created before the design system is Published, it renders on defaults. Phase 2a always precedes Phase 2b.
 - **Treating Phase 2a as a chat prompt.** It's a form. The optional sources are *dragged into the form*, not pasted into chat.
-- **Treating the brand sources as mandatory.** Every "example" is optional; a from-scratch project seeds from the text fields. Don't force an upload.
+- **Treating the brand sources as mandatory — except fonts.** Code, `.fig`, logos, and screenshots are optional; a from-scratch project seeds from the text fields. But when the brand pins specific typefaces, the **font files are required** (naming them in text triggers substitution + a "Missing brand fonts" warning). Don't force the optional uploads; don't let the font upload be skipped.
+- **Pointing at build-pipeline font subsets.** Subsetted, content-hashed, per-unicode-range single-weight `.woff2` files are incomplete. Upload the canonical full/variable `.ttf`/`.otf`.
 - **Asserting unverified UI affordances.** Only the documented ones — the setup-form fields, "Published", automatic inheritance, "Remix", Chat + Inline comments, the Export menu options — are real. No "High fidelity" picker, no "adjustment knobs", no "direct text edit".
 - **Reference to Stage 1 IDs.** This doc is a how-to-use-Claude-Design guide; cross-references to `M-N` / `FR-X<n>` belong in the prompt files, not here.
 - **Missing troubleshooting.** First-time Claude Design users hit the same handful of issues; pre-loading them saves time.

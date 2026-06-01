@@ -23,7 +23,7 @@ Stage 2 is **two ordered phases**. The design system comes **first** and is **Pu
 - The design system is created through a **setup form** — *"Set up your design system"* — reached from the **organization picker (lower-left)**; it requires **admin permissions** and is **organization-scoped** (it is *not* a chat prompt). The form's fields are: **"Company name and blurb (or name of design system)"**, an optional **"Provide examples of your design system and products (all optional)"** section (*Link code on GitHub* · *Link code from your computer* · *Upload a .fig file* · *Add fonts, logos and assets*), and **"Any other notes?"**. Claude generates a UI kit (color palette, typography, components, layout patterns) from those inputs.
 - The owner **reviews** the kit (validating with a throwaway test project), refines or swaps source assets, then flips the **"Published"** toggle on. Once Published, **every project created from the Claude Design homescreen while in that organization inherits the design system automatically** — no re-upload, no reconfiguration. The system is **editable later via "Remix"** (org settings → "Open" → "Remix" opens a chat to modify it).
 
-(Sources: Claude Design support, "Set up your design system" and "Get started with Claude Design.") **No pre-existing brand bundle is assumed** — every project fills the same form; the only branch is which optional examples it attaches. A from-scratch project seeds the brand from the blurb + notes alone (all examples are optional); when real code or assets exist, attaching ≥1 source materially improves extraction.
+(Sources: Claude Design support, "Set up your design system" and "Get started with Claude Design.") **No pre-existing brand bundle is assumed** — every project fills the same form; the only branch is which optional examples it attaches. A from-scratch project seeds the brand from the blurb + notes alone (the examples are labeled optional); when real code or assets exist, attaching ≥1 source materially improves extraction. **One exception: fonts.** If the design system pins specific typefaces, the actual font *files* must be uploaded via *"Add fonts, logos and assets"* — naming a typeface in text does not import it (Claude substitutes web fonts and warns *"Missing brand fonts"*). Upload the full/variable `.ttf`/`.otf`, not build-pipeline subsets.
 
 **When ready.** Stage 1 is `approved` (or close) and the owner wants either to establish the project's visual identity, to pitch externally, or both. Even a project that skips the deck benefits from Phase 2a if Stage-4 screens are coming.
 
@@ -32,7 +32,7 @@ Stage 2 is **two ordered phases**. The design system comes **first** and is **Pu
 - `docs/design-system-setup.md` — **Phase 2a.** A **form worksheet** (copy-paste blocks mapped to the setup-form fields — **not** a `=== PROMPT ===` chat block): the *Company name and blurb* value (from `vision.md`), the *Any other notes?* value (distilled brand direction — notes-length), the optional **attach checklist**, and the **review → Publish (→ Remix to edit later)** loop.
 - `docs/claude-design-prompt.md` — **Phase 2b.** The deck **chat prompt** (`=== PROMPT ===` sentinels) that generates the deck as a project, created conversationally, **inheriting the published design system**. Does not redefine palette/type, and assumes no "project type" picker.
 - `docs/_deck-bundle/README.md` — the operational step-by-step that sequences both phases through the Claude Design UI (fill the form & Publish the design system → create the deck project that inherits it → iterate → export).
-- `docs/_deck-bundle/01-design-system-sources/` — empty directory; **optional** assets (fonts, logos, brand PDF, reference screenshots) to drag into the setup form. Stays empty for from-scratch projects.
+- `docs/_deck-bundle/01-design-system-sources/` — empty directory for assets dragged into the setup form. Logos/PDF/screenshots are optional; the **brand font files are required when the system pins typefaces** (stage full/variable `.ttf`/`.otf` + license file under `fonts/`). Stays empty only for from-scratch projects that name no specific family.
 - `docs/_deck-bundle/02-deck-attachments/` — empty directory; user populates with cost spreadsheets or other reference data the deck needs.
 
 **What the user does.**
@@ -40,14 +40,15 @@ Stage 2 is **two ordered phases**. The design system comes **first** and is **Pu
 *Phase 2a — create & publish the design system (do this first):*
 
 1. Open Claude Design; from the **organization picker (lower-left)** select/create the org (admin permissions required) and start *"Set up your design system."*
-2. Fill the form from `design-system-setup.md`: paste the **Company name and blurb** and **Any other notes?** values; optionally attach code (GitHub link or a dragged frontend subfolder), a `.fig`, or fonts/logos/assets from `01-design-system-sources/`.
-3. Review the generated UI kit (validate with a test project; swap assets if extraction is weak), then **flip "Published" on.** Non-optional — an unpublished system is not inherited. (Edit later via **Remix**.)
+2. Fill the form from `design-system-setup.md`: paste the **Company name and blurb** and **Any other notes?** values; optionally attach code (GitHub link or a dragged frontend subfolder), a `.fig`, or logos/screenshots from `01-design-system-sources/`.
+3. **Upload the brand font files** via *"Add fonts, logos and assets"* — **required when the system pins specific typefaces.** Naming a typeface in the notes does not import it; Claude renders substitutes and warns *"Missing brand fonts."* Upload the canonical **full/variable `.ttf`/`.otf`** (all weights, full charset for every target language), **not** the subsetted `.woff2` fragments a build pipeline emits. Open-source fonts can be staged in `01-design-system-sources/fonts/` with their license file.
+4. Review the generated UI kit (validate with a test project; confirm typography renders in the real faces, not substitutes; swap assets if extraction is weak), then **flip "Published" on.** Non-optional — an unpublished system is not inherited. (Edit later via **Remix**.)
 
 *Phase 2b — generate the deck (inherits the published system):*
 
-4. Populate `_deck-bundle/02-deck-attachments/` with reference data (spreadsheets, datasets) the deck content references.
-5. From the Claude Design homescreen, create a new project in the same organization — creation is **conversational** (describe the deck; no project-type picker), and it **inherits the published design system automatically**. Send the body of `claude-design-prompt.md` (between the sentinels) as the first message; attach the deck attachments; iterate via **Chat** and **inline comments**.
-6. Export — **standalone HTML** for an interactive deck, **PDF/PPTX** for a static hand-out.
+5. Populate `_deck-bundle/02-deck-attachments/` with reference data (spreadsheets, datasets) the deck content references.
+6. From the Claude Design homescreen, create a new project in the same organization — creation is **conversational** (describe the deck; no project-type picker), and it **inherits the published design system automatically**. Send the body of `claude-design-prompt.md` (between the sentinels) as the first message; attach the deck attachments; iterate via **Chat** and **inline comments**.
+7. Export — **standalone HTML** for an interactive deck, **PDF/PPTX** for a static hand-out.
 
 The `_deck-bundle/README.md` template walks step-by-step through the full two-phase Claude Design UI flow.
 

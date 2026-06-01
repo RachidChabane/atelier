@@ -74,23 +74,23 @@ Paste this into the form's notes field. Keep it notes-length — a few sentences
 
 ### Section 4 — Attach checklist (the optional "examples")
 
-Map this to the form's *"Provide examples of your design system and products (all optional)"* section. State plainly that every item is **optional**, but ≥1 real source improves extraction when available. Branch only on whether the project has code/assets:
+Map this to the form's *"Provide examples of your design system and products (all optional)"* section. The "optional" label is accurate for everything **except fonts**: when the design system pins specific typefaces, the actual **font files must be uploaded** — naming a family in *Any other notes?* does not import it (Claude renders with substitute web fonts and then warns *"Missing brand fonts"*). Stage the canonical **full/variable TTF/OTF**, not build-pipeline subsets. Branch only on whether the project has code/assets:
 
 ```markdown
 ## Attach checklist — "Provide examples of your design system and products (all optional)"
 
-All four are **optional**. You only need the blurb + notes to get started; providing sources gives Claude more to anchor on. Attach what genuinely exists — don't fabricate.
+The form labels everything "optional" — but that label is **misleading for fonts**. If your *Any other notes?* names specific typefaces, you **must upload the actual font files**: naming a font in text does **not** import it. Claude renders with substitute web fonts and later shows a **"Missing brand fonts"** warning (*"Claude is rendering typography with substitute web fonts"*) with an **"Upload fonts"** button. Everything else below is genuinely optional; ≥1 real source improves extraction when available.
 
 **If the project HAS frontend code or real brand assets:**
 - [ ] **Link code on GitHub** — paste the repo URL (Claude reads components and styles; React component libraries are supported).
 - [ ] **Link code from your computer** — drag a folder. Claude copies *selected* files, not the whole codebase; for a large repo, drag a **frontend-focused subfolder**.
 - [ ] **Upload a .fig file** — Figma file (parsed locally in-browser; never uploaded).
-- [ ] **Add fonts, logos and assets** — drag font files, logos, brand PDFs/PowerPoints, reference screenshots (Claude extracts colors, type, layout).
+- [ ] **Add fonts, logos and assets** — **REQUIRED when the brand pins specific typefaces.** Drag the actual **font files**: the canonical **full/variable `.ttf`/`.otf`** with the complete weight axis and full charset (so diacritics for every target language render). Do **not** upload the subsetted, content-hashed, per-unicode-range single-weight `.woff2` fragments a build pipeline emits — they are incomplete. Stage open-source fonts (SIL OFL etc.) in the repo with their license file; supply commercial/licensed fonts yourself. Drag logos, brand PDFs/PowerPoints, and reference screenshots here too (Claude extracts colors, type, layout).
 
 **If the project is pre-build / from scratch (no brand yet):**
 - [ ] Skip the code attachments.
-- [ ] Optionally add fonts, logos, a brand PDF, or inspiration screenshots to the "fonts, logos and assets" zone.
-- [ ] Otherwise rely on the **Company name and blurb** + **Any other notes?** fields alone — accept that Claude has less to anchor on, and plan an extra review round.
+- [ ] If your notes name a specific typeface, **upload its font files** (same full/variable rule as above) — naming it in text is not enough. Otherwise add any logos, brand PDF, or inspiration screenshots.
+- [ ] If you've named no specific family, rely on the **Company name and blurb** + **Any other notes?** fields alone — accept that Claude has less to anchor on, and plan an extra review round.
 ```
 
 ### Section 5 — Review → Publish → (Remix to edit later)
@@ -116,7 +116,7 @@ Common refinement lines, framed as **Remix-chat** instructions (not form edits),
 If the generated kit drifts, **Remix** it (or swap source assets and regenerate). Common fixes:
 
 - **Palette inflated past intent** → *"Strip the palette to <N> colors: `<bg hex>` background, `<fg hex>` foreground, `<accent hex>` accent. No other hue. Provide dark-register equivalents."*
-- **System fonts substituted for the named family** → *"The display family is **<Family>** [axes/weights]; body is **<Family>**. Re-import and restate the full stack, including <script> if multi-script."*
+- **Typography rendered with substitute web fonts / "Missing brand fonts" warning** → the font files were never uploaded; naming them in text doesn't import them. Click **"Upload fonts"** (or re-open *Add fonts, logos and assets*) and upload the **full/variable `.ttf`/`.otf`** binaries — not build-pipeline `.woff2` subsets. Then in chat: *"Use the uploaded **<Family>** [axes/weights] for display and **<Family>** for body, including <script> if multi-script."*
 - **Generic-SaaS register** (most common) → *"This reads as tech-startup, not <intended register>. Specifically: [gradients / coloured shadows / generic icons / pill buttons]. Re-derive against the brand notes."*
 - **A figurative logo appeared when the mark is typographic** → *"Remove the logo. The mark is typographic — <bare wordmark in Display Family>, no graphic element."*
 ```
@@ -125,7 +125,7 @@ If the generated kit drifts, **Remix** it (or swap source assets and regenerate)
 
 - **No sentinels.** This is form input. `=== PROMPT ===` is reserved for chat prompts (deck, screens). Each field gets a clearly-labeled copy block instead.
 - **One form, one branch.** Every project fills the same "Set up your design system" form. The only branch is the attach checklist (has-code/assets vs from-scratch). Don't author two parallel procedures.
-- **Examples are optional, accurately.** The form marks all examples optional; say so. Add the documented nuance: ≥1 real source improves extraction when one exists.
+- **Examples are optional — except fonts.** The form marks all examples optional; say so, but flag the exception: when the brand pins specific typefaces, the font *files* must be uploaded (naming them in text triggers substitution + a "Missing brand fonts" warning). Add the documented nuance: ≥1 real source improves extraction when one exists.
 - **Notes-length notes.** The *Any other notes?* block is a few sentences / tight bullets, not a spec. Don't transplant a full brand brief into it.
 - **Publish is the terminal step; Remix is the edit path.** Both stated explicitly — an unpublished system is not inherited.
 - **Opinionated on structure, neutral on content.** The field blocks are fixed shape; the owner supplies palette intent, type personality, register. Don't invent the brand for them.
@@ -136,6 +136,8 @@ If the generated kit drifts, **Remix** it (or swap source assets and regenerate)
 - **Wrapping the worksheet in `=== PROMPT ===`.** This is a form, not a chat prompt. Sentinels here mislead the reader into pasting form input into the chat.
 - **Worksheet without the Publish close.** If it doesn't end at review → Publish (→ Remix to edit), the deck and screens inherit nothing and Phase 2b falls back to defaults.
 - **Two parallel procedures.** The form is one path for both brand-exists and from-scratch; only the attach checklist branches.
+- **Naming fonts instead of uploading them.** A typeface named only in *Any other notes?* is not imported — Claude substitutes web fonts and warns "Missing brand fonts". Upload the actual full/variable font binaries.
+- **Pointing at build-pipeline font fragments.** Subsetted, content-hashed, per-unicode-range single-weight `.woff2` files are incomplete (missing weights/glyphs/diacritics). Upload the canonical full/variable `.ttf`/`.otf` instead.
 - **An essay in "Any other notes?".** Keep it notes-length; the form field is not a brand spec.
 - **Inventing brand substance.** The skill supplies the decision *shape*; the owner supplies palette intent, type personality, register.
 - **Folding the deck into this file.** The deck is Phase 2b (`claude-design-prompt.md`). This file establishes the system only.

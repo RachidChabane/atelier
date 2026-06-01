@@ -8,10 +8,10 @@ A reading-and-walk-through verification, not an end-to-end automated test. The s
 
 ## Date and version
 
-- **Date:** 2026-05-04 (re-verified 2026-06-01 for v0.2.0 — Stage-2 rebuilt around Claude Design's form-based, publish-and-inherit model)
+- **Date:** 2026-05-04 (re-verified 2026-06-01 for v0.2.0 — Stage-2 rebuilt around Claude Design's form-based, publish-and-inherit model; 2026-06-02 for v0.2.1 — Stage-2 font-files-must-be-uploaded fix)
 - **Marketplace:** `atelier` v0.1.0
-- **Plugin:** `project-bootstrap` v0.2.0
-- **Skill:** `project-bootstrap` v0.2.0
+- **Plugin:** `project-bootstrap` v0.2.1
+- **Skill:** `project-bootstrap` v0.2.1
 - **Reference project:** the source pattern is a real Stage-1 application the author bootstrapped before encoding the workflow as a skill (annotated in `references/example-walkthrough.md`)
 
 ## Mechanical checks (passed)
